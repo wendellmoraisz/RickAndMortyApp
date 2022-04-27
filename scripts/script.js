@@ -66,7 +66,6 @@ document.getElementById('characters').onclick = () => {
     }
 }
 
-
 document.getElementById('locations').onclick = () => {
     container.innerHTML = ''
     for (let i = 1; i <= 7; i++) {
