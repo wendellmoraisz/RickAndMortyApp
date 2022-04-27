@@ -67,22 +67,23 @@ document.getElementById('characters').onclick = () => setAllCharacters()
     }
    }
 
+   async function locationFetch(url){
+       const response = await fetch(url)
+
+       if (!response.ok) throw new Error(response.status)
+
+       const location = await response.json()
+       return location
+   }
+
    document.getElementById('locations').onclick = () => {
        container.innerHTML = ''
-       let allLocations = []
-       for(let i = 1; i <= 20; i++){
-            fetch(`https://rickandmortyapi.com/api/location?page=${i}`)
-            .then(res => res.json())
-            .then(json => allLocations.push(json))
-            .then(() => {
-                if(allLocations.length == 20){
-                    for(let i = 0; i < allLocations.length; i++){
-                        allLocations[i].results.forEach(res => {
-                            setLocation(res)
-                           })
-                       }
-                   }
-               })
+       for(let i = 1; i <= 7; i++){
+               locationFetch(`https://rickandmortyapi.com/api/location?page=${i}`)
+                .then(response => response.results.forEach(result => {
+                    setLocation(result)
+                }))
+                .catch(error => console.log(error))
            }
       }
 
