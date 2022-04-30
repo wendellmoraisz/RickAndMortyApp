@@ -94,7 +94,7 @@ button{
     color: #9e9e9e;
 }
 
-.location-card {
+.main-card {
     background: #3c3e44;
     margin-bottom: 30px;
     border-radius: 10px;
@@ -108,17 +108,17 @@ button{
     transition: all .2s ease;
 }
 
-.location-card p,
-.location-card h1 {
+.main-card p,
+.main-card h1 {
     margin-bottom: 15px;
 }
 
-.location-card:hover {
+.main-card:hover {
     box-shadow: 0px 10px 20px 2px rgba(0, 0, 0, 0.25); 
     transform: translateY(-1px);
 }
 
-.location-residents-container {
+.main-characters-container{
     width: 800px;
     width: 100%;
     display: flex;
@@ -135,18 +135,18 @@ button{
     pointer-events: all;
 }
 
-.location-card .residents {
+.main-card .residents {
     margin-top: 40px;
     text-align: right;
 }
 
-.location-card .residents button {
+.main-card .residents button {
     font-size: 1em;
     padding: 5px 10px;
     margin-left: 10px;
 }
 
-.location-residents {
+.main-characters {
     margin: 20px;
     height: 340px;
     width: 200px;
@@ -154,15 +154,9 @@ button{
     transition: all .3s ease;
 }
 
-.location-residents img {
+.main-characters img {
     width: 200px;
     height: 200px;
-}
-
-.season {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
 .status-wrapper {
@@ -232,9 +226,13 @@ footer a:hover {
         width: 100%;
     }
 
-    .location-card {
+    .main-card {
         width: 300px;
         font-size: 1.1em;
+    }
+
+    .main-characters-container{
+        width: 300px;
     }
 
     footer {

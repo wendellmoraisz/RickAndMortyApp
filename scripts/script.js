@@ -79,7 +79,7 @@ document.getElementById('locations').onclick = () => {
 
 function setLocation(location) {
     let locationCard = document.createElement('div')
-    locationCard.classList.add('location-card')
+    locationCard.classList.add('main-card')
 
     let h1 = document.createElement('h1')
     h1.append(location.name)
@@ -106,7 +106,7 @@ function setLocation(location) {
     locationCard.appendChild(pResidents)
 
     let residentsContainer = document.createElement('div')
-    residentsContainer.classList.add('location-residents-container')
+    residentsContainer.classList.add('main-characters-container')
     location.residents.forEach(resident => fetchCharacter(resident, residentsContainer))
 
 
@@ -119,7 +119,7 @@ async function fetchCharacter(characterurl, container){
         .then(res => res.json())
         .then(json => {
             let locationCharacterCard = document.createElement('div')
-            locationCharacterCard.classList.add('location-residents')
+            locationCharacterCard.classList.add('main-characters')
             locationCharacterCard.classList.add('character-card')
 
             let img = document.createElement('img')
@@ -166,7 +166,7 @@ document.getElementById('episodes').onclick = () => {
         newFetch(`https://rickandmortyapi.com/api/episode?page=${i}`)
             .then(res => res.results.forEach(episode => {
                 let episodeContainer = document.createElement('div')
-                episodeContainer.classList.add('location-card')
+                episodeContainer.classList.add('main-card')
 
                 let h1 = document.createElement('h3')
                 h1.innerHTML = `${episode.episode} - ${episode.name}`
@@ -190,7 +190,7 @@ document.getElementById('episodes').onclick = () => {
                 p.appendChild(button)
                 
                 let participantsContainer = document.createElement('div')
-                participantsContainer.classList.add('location-residents-container') //
+                participantsContainer.classList.add('main-characters-container') //
                 episodeContainer.appendChild(participantsContainer)
                 
                 episode.characters.forEach(character => fetchCharacter(character, participantsContainer))
