@@ -147,9 +147,11 @@ function buttonInteration(button, iButton, elementContainer) {
     button.onclick = () => {
         if (elementContainer.style.maxHeight == '0px' || elementContainer.style.maxHeight == 0) {
             elementContainer.style.maxHeight = `${elementContainer.scrollHeight}px`
+
         } else {
             elementContainer.style.maxHeight = '0px'
         }
+
         elementContainer.classList.toggle('show')
 
         iButton.classList.toggle('fa-arrow-down')
@@ -160,37 +162,9 @@ function buttonInteration(button, iButton, elementContainer) {
 document.getElementById('episodes').onclick = () => {
     container.innerHTML = ''
 
-    for (let i = 1; i <= 5; i++) {
-        let season = document.createElement('div')
-        season.classList.add('location-card')
-
-        container.appendChild(season)
-
-        let divSeason = document.createElement('div')
-        divSeason.classList.add('season')
-        divSeason.innerHTML = `<h3>Season ${i}</h3>`
-
-        let button = document.createElement('button')
-        let iButton = document.createElement('i')
-        iButton.classList.add('fas')
-        iButton.classList.add('fa-arrow-down')
-        button.appendChild(iButton)
-        divSeason.appendChild(button)
-        season.appendChild(divSeason)
-
-        let episodesContainer = document.createElement('div')
-        episodesContainer.classList.add('location-residents-container')
-        episodesContainer.id = `season${i}`
-
-        season.appendChild(episodesContainer)
-
-        buttonInteration(button, iButton, episodesContainer)
-    }
-
     for (let i = 1; i <= 3; i++) {
         newFetch(`https://rickandmortyapi.com/api/episode?page=${i}`)
             .then(res => res.results.forEach(episode => {
-                let seasonContainer = document.getElementById(`season${episode.episode.split('')[2]}`)
                 let episodeContainer = document.createElement('div')
                 episodeContainer.classList.add('location-card')
 
@@ -207,7 +181,7 @@ document.getElementById('episodes').onclick = () => {
                 p.classList.add('residents')
                 p.innerHTML = `Participants: ${episode.characters.length}`
                 episodeContainer.appendChild(p)
-
+                
                 let button = document.createElement('button')
                 let iButton = document.createElement('i')
                 iButton.classList.add('fas')
@@ -216,12 +190,12 @@ document.getElementById('episodes').onclick = () => {
                 p.appendChild(button)
                 
                 let participantsContainer = document.createElement('div')
-                participantsContainer.classList.add('location-residents-container')
+                participantsContainer.classList.add('location-residents-container') //
                 episodeContainer.appendChild(participantsContainer)
                 
                 episode.characters.forEach(character => fetchCharacter(character, participantsContainer))
                 
-                seasonContainer.appendChild(episodeContainer)
+                container.appendChild(episodeContainer)
                 buttonInteration(button, iButton, participantsContainer)
             }))
     }
