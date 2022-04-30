@@ -107,46 +107,122 @@ function setLocation(location) {
 
     let residentsContainer = document.createElement('div')
     residentsContainer.classList.add('location-residents-container')
-    location.residents.forEach(resident => {
-        fetch(resident)
-            .then(res => res.json())
-            .then(json => {
-                let locationCharacterCard = document.createElement('div')
-                locationCharacterCard.classList.add('location-residents')
-                locationCharacterCard.classList.add('character-card')
+    location.residents.forEach(resident => fetchCharacter(resident, residentsContainer))
 
-                let img = document.createElement('img')
-                img.src = json.image
-                locationCharacterCard.appendChild(img)
 
-                let h2 = document.createElement('h2')
-                h2.append(json.name)
-                locationCharacterCard.appendChild(h2)
-
-                let p = document.createElement('p')
-                p.classList.add('status-wrapper')
-                let span = document.createElement('span')
-                span.classList.add('status')
-                span.classList.add(json.status)
-                p.appendChild(span)
-                p.append(`${json.status} - ${json.species}`)
-                locationCharacterCard.appendChild(p)
-
-                residentsContainer.appendChild(locationCharacterCard)
-            })
-    })
     locationCard.appendChild(residentsContainer)
     container.appendChild(locationCard)
+    buttonInteration(pResidentsButton, iButton, residentsContainer)
+}
+async function fetchCharacter(characterurl, container){
+    await fetch(characterurl)
+        .then(res => res.json())
+        .then(json => {
+            let locationCharacterCard = document.createElement('div')
+            locationCharacterCard.classList.add('location-residents')
+            locationCharacterCard.classList.add('character-card')
 
-    pResidentsButton.onclick = () => {
-        if (residentsContainer.style.maxHeight == '0px' || residentsContainer.style.maxHeight == 0) {
-            residentsContainer.style.maxHeight = `${residentsContainer.scrollHeight}px`
+            let img = document.createElement('img')
+            img.src = json.image
+            locationCharacterCard.appendChild(img)
+
+            let h2 = document.createElement('h2')
+            h2.append(json.name)
+            locationCharacterCard.appendChild(h2)
+
+            let p = document.createElement('p')
+            p.classList.add('status-wrapper')
+            let span = document.createElement('span')
+            span.classList.add('status')
+            span.classList.add(json.status)
+            p.appendChild(span)
+            p.append(`${json.status} - ${json.species}`)
+            locationCharacterCard.appendChild(p)
+
+            container.appendChild(locationCharacterCard)
+        })
+    }
+
+function buttonInteration(button, iButton, elementContainer) {
+    button.onclick = () => {
+        if (elementContainer.style.maxHeight == '0px' || elementContainer.style.maxHeight == 0) {
+            elementContainer.style.maxHeight = `${elementContainer.scrollHeight}px`
         } else {
-            residentsContainer.style.maxHeight = '0px'
+            elementContainer.style.maxHeight = '0px'
         }
-        residentsContainer.classList.toggle('show')
+        elementContainer.classList.toggle('show')
 
         iButton.classList.toggle('fa-arrow-down')
         iButton.classList.toggle('fa-arrow-up')
+    }
+}
+
+document.getElementById('episodes').onclick = () => {
+    container.innerHTML = ''
+
+    for (let i = 1; i <= 5; i++) {
+        let season = document.createElement('div')
+        season.classList.add('location-card')
+
+        container.appendChild(season)
+
+        let divSeason = document.createElement('div')
+        divSeason.classList.add('season')
+        divSeason.innerHTML = `<h3>Season ${i}</h3>`
+
+        let button = document.createElement('button')
+        let iButton = document.createElement('i')
+        iButton.classList.add('fas')
+        iButton.classList.add('fa-arrow-down')
+        button.appendChild(iButton)
+        divSeason.appendChild(button)
+        season.appendChild(divSeason)
+
+        let episodesContainer = document.createElement('div')
+        episodesContainer.classList.add('location-residents-container')
+        episodesContainer.id = `season${i}`
+
+        season.appendChild(episodesContainer)
+
+        buttonInteration(button, iButton, episodesContainer)
+    }
+
+    for (let i = 1; i <= 3; i++) {
+        newFetch(`https://rickandmortyapi.com/api/episode?page=${i}`)
+            .then(res => res.results.forEach(episode => {
+                let seasonContainer = document.getElementById(`season${episode.episode.split('')[2]}`)
+                let episodeContainer = document.createElement('div')
+                episodeContainer.classList.add('location-card')
+
+                let h1 = document.createElement('h3')
+                h1.innerHTML = `${episode.episode} - ${episode.name}`
+                episodeContainer.appendChild(h1)
+
+                
+                let releaseDate = document.createElement('p')
+                releaseDate.innerHTML = `Release date of: ${episode.air_date}`
+                episodeContainer.appendChild(releaseDate)
+
+                let p = document.createElement('p')
+                p.classList.add('residents')
+                p.innerHTML = `Participants: ${episode.characters.length}`
+                episodeContainer.appendChild(p)
+
+                let button = document.createElement('button')
+                let iButton = document.createElement('i')
+                iButton.classList.add('fas')
+                iButton.classList.add('fa-arrow-down')
+                button.appendChild(iButton)
+                p.appendChild(button)
+                
+                let participantsContainer = document.createElement('div')
+                participantsContainer.classList.add('location-residents-container')
+                episodeContainer.appendChild(participantsContainer)
+                
+                episode.characters.forEach(character => fetchCharacter(character, participantsContainer))
+                
+                seasonContainer.appendChild(episodeContainer)
+                buttonInteration(button, iButton, participantsContainer)
+            }))
     }
 }
